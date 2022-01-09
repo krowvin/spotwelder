@@ -147,6 +147,9 @@ void loop(void) {
 
 
 void readEncoder() {
+  // As of right now, don't do anything with the rotation while in the weld count view
+  if (showWeldCount) return;
+
   currentStateCLK = digitalRead(CLK);
   if (currentStateCLK != lastStateCLK  && currentStateCLK == 1) {
     

@@ -24,10 +24,14 @@ Uses a rotary decoder to increase/decrease the on time for the spot welder. Incl
   * You could probably use any of the arduino's. If it does not have two interrupts you can change the rotary encoder code or switch to a potentiometer and poll an analog pin instead.
 - Various lengths of 12-14 gauge wire for making the connections (Use the jumper cable wire from the transformer to the spot welder pen)
 - An old 5v USB power adapter - take it apart and use it as a switch mode power supply for the arduino so you can jump off the mains voltage comming in
+- Microwave Transformer
+  * Minimum of 800W.
+  * Keep the screws mounting the transformer to the microwave chassis. Use them to mount it in your chassis. (The transformer usually has threaded screw holes)
+  * I took a hacksaw to the secondary coil (it has the thinner wire. Keep the primary coil (has mains voltage going into it) DO NOT DAMAGE THE PRIMARY COIL ENAMEL (on the wire)
+  * **DISCHARGE THE CAPACITOR** - Metal cylinder - Take an insulated screwdriver across the leads of the capacitor. **It can store enough current/voltage to kill.** 
 - Use the old 120v plug from the microwave
 - Build/buy a chassis for this. (I went with this [Amazon](https://www.amazon.com/dp/B07ZT9KFBV))
-- microwave AC cord/plug
-  
+
 ### IMPORTANT ###
 Test all of your code with a bread board. Connect the SSR and everything as if it were "live" but do not connect any high voltage (120v) connections yet. Test everything and make sure it is working as intended before you connect the high voltage lines/transformer. 
 

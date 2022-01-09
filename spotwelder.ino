@@ -50,10 +50,9 @@ void setup(void) {
   pinMode(rotaryBtnPin, INPUT);
   // Read the initial state of CLK
   lastStateCLK = digitalRead(CLK);
-  // Call updateEncoder() when any high/low changed seen
-  // on interrupt 0 (pin 2), or interrupt 1 (pin 3)
-  attachInterrupt(0, updateEncoder, CHANGE);
-  attachInterrupt(1, updateEncoder, CHANGE);
+  // Pin 0 and Pin 1 (interrupt pins)
+  attachInterrupt(0, readEncoder, CHANGE);
+  attachInterrupt(1, readEncoder, CHANGE);
 
   // Welding
   pinMode(weldBtnPin, INPUT_PULLUP);
@@ -62,8 +61,6 @@ void setup(void) {
   // Test
   digitalWrite(ssrPin, HIGH);
   delay(2000);
-
-  Serial.begin(9600);
 }
 
 
@@ -71,14 +68,11 @@ void draw(void) {
   // graphic commands to redraw the complete screen
   u8g2.setFont(u8g2_font_ncenB12_tr);
   u8g2.drawStr(10, 13, "Weld Delay");
-  // u8g2.setScale2x2();
-  //  u8g2.setPrintPos(20,20);
   u8g2.setFont(u8g2_font_ncenB24_tr);
   if (weldDebounceDelay > 99)
     u8g2.drawStr(1, 60, String(weldDebounceDelay).c_str());
   else
     u8g2.drawStr(25, 60, String(weldDebounceDelay).c_str());
-  // u8g2.undoScale();
   u8g2.drawStr( 55, 60, " ms");
 
 }
@@ -100,20 +94,12 @@ void loop(void) {
   /*=================*/
   /* WELDER START    */
   /*=================*/
-  // This is for the initial button press
   if ((millis() - lastDebounceTime) > debounceDelay) {
-    // whatever the reading is at, it's been there for longer than the debounce
-    // delay, so take it as the actual current s tate:
-    // if the button state has changed:
     if (reading != buttonState) {
       buttonState = reading;
       if (buttonState == HIGH) {
         digitalWrite(ssrPin, HIGH);
         lastWeldDebounceTime = millis();
-       // delay(weldDebounceDelay);
-       // digitalWrite(ssrPin, LOW);
-        Serial.println("SSR Weld Button Pressed!");
-        
       }
     }
   }
@@ -132,18 +118,17 @@ void loop(void) {
   /* =========================================== */
 
   /* =========================================== */
-  /*      MENU HANDLER                           */
+  /*      MENU BTN PRESS                         */
   /* =========================================== */
   int rotary_reading = digitalRead(rotaryBtnPin);
   if (rotary_reading != lastRotaryButtonState) {
-    // reset the debouncing timer
     lastRotaryDebounceTime = millis();
   }
   if ((millis() - lastRotaryDebounceTime) > debounceDelay) {
     if (rotary_reading != rotaryButtonState) {
       rotaryButtonState = rotary_reading;
       if (rotaryButtonState == LOW) {
-        Serial.println("Rotary Button Pressed!");
+        // Do something in the OLED menu
       }
     }
   }
@@ -152,13 +137,10 @@ void loop(void) {
 }
 
 
-void updateEncoder() {
-  // Read the current state of CLK
+void readEncoder() {
   currentStateCLK = digitalRead(CLK);
-  // If last and current state of CLK are different, then pulse occurred
-  // React to only 1 state change to avoid double count
   if (currentStateCLK != lastStateCLK  && currentStateCLK == 1) {
-    Serial.println(counter);
+    
     if (digitalRead(DT) == currentStateCLK) {
       if (counter > minWeldDelay) {
         counter -= 10;
@@ -171,15 +153,6 @@ void updateEncoder() {
       }
     }
     weldDebounceDelay = counter;
-
-    Serial.print("Direction: ");
-    Serial.print(currentDir);
-    Serial.print(" | Counter: ");
-    Serial.println(counter);
   }
-
-  // Remember last CLK state
   lastStateCLK = currentStateCLK;
-
-
 }

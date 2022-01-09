@@ -1,6 +1,6 @@
 # Arduino Spot Welder
 
-### Uses an SSR and a Microwave transformer rewound to 4VAC to spot weld 18650 lithium ion batteries
+### Solid State Relay and Microwave transformer rewound from 1000V+ to 4VAC to spot weld 18650 lithium ion batteries
 
 ## Dependencies
 * U8g2lib.h - Install Instructions [here](https://github.com/olikraus/u8g2/wiki/u8g2install)

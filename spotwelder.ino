@@ -33,14 +33,18 @@ int buttonState;
 int rotaryButtonState;
 int lastButtonState = LOW;
 int lastRotaryButtonState = LOW;
-int stringWidth = 0;
 
-
-unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+// Make sure these are unsigned long - if a long time passes between welds it can exceed the value of int
+// Stores the last time the weld was triggered
+unsigned long lastDebounceTime = 0;
+// Last time rotary knob was triggered
 unsigned long lastRotaryDebounceTime = 0;
+// Stores offset for when to turn off the weld
 unsigned long lastWeldDebounceTime = 0;
-unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
+// Increase this number if you are getting false positives (i.e. sensitive weld button/rotary buttons) 
+unsigned long debounceDelay = 50;
 int weldDebounceDelay = 50; // MS to initialize the weld time to
+// Max/min time in ms user can change the weld delay to
 int maxWeldDelay = 500;
 int minWeldDelay = 10;
 

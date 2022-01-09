@@ -15,7 +15,7 @@ Uses a rotary decoder to increase/decrease the on time for the spot welder. Incl
 - OLED [Amazon](https://www.amazon.com/gp/product/B00O2LLT30)
 - Spot Welder Pen [Amazon](https://www.amazon.com/gp/product/B08R6Y9DNM)
 - Jumper Cables (for wire) [Home Depot](https://www.homedepot.com/p/Road-Power-12-ft-8-Gauge-200-Amp-Yellow-Booster-Cables-84458802/309569068?)
-  * You'll want to keep this length very short. Just enough for 3-4 wraps around the transformer. Then about 8 inches on each side from the transformer. If you can get 2/0 - 4/0 gage wire go for it. With the jumper cables you will save money but will need to watch thew cable temperature.
+  * You'll want to keep this length very short. Just enough for 3-4 wraps around the transformer. Then about 8 inches on each side from the transformer. If you can get 2/0 - 4/0 gage wire go for it. With the jumper cables you will save money but will need to watch the cable temperature.
 - Rotary Encoder [Amazon](https://www.amazon.com/gp/product/B06XQTHDRR)
 - Heavy Duty Wire Lugs [Amazon](https://www.amazon.com/gp/product/B073Y9RYFM)
 - Solid State Relay [Amazon](https://www.amazon.com/gp/product/B08GPB7N2T)

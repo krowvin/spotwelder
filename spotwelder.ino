@@ -10,7 +10,10 @@
 #define DT 3
 #define rotaryBtnPin 4
 
-int counter = 50;
+int weldDelay = 50;
+// # of welds since last reboot
+int weldCount = 0;
+boolean showWeldCount = false;
 int currentStateCLK;
 int lastStateCLK;
 String currentDir = "";
@@ -42,6 +45,9 @@ int maxWeldDelay = 500;
 int minWeldDelay = 10;
 
 void setup(void) {
+  pinMode(ssrPin, OUTPUT);
+  // Make sure the SSR Pin starts LOW
+  digitalWrite(ssrPin, LOW);
   u8g2.begin();
   // Control
   // Set encoder pins as inputs
@@ -56,25 +62,26 @@ void setup(void) {
 
   // Welding
   pinMode(weldBtnPin, INPUT_PULLUP);
-  pinMode(ssrPin, OUTPUT);
 
-  // Test
-  digitalWrite(ssrPin, HIGH);
-  delay(2000);
 }
 
 
 void draw(void) {
-  // graphic commands to redraw the complete screen
+  // Show the weld delay
   u8g2.setFont(u8g2_font_ncenB12_tr);
-  u8g2.drawStr(10, 13, "Weld Delay");
-  u8g2.setFont(u8g2_font_ncenB24_tr);
-  if (weldDebounceDelay > 99)
-    u8g2.drawStr(1, 60, String(weldDebounceDelay).c_str());
-  else
-    u8g2.drawStr(25, 60, String(weldDebounceDelay).c_str());
-  u8g2.drawStr( 55, 60, " ms");
-
+  if (showWeldCount) {
+    u8g2.drawStr(1, 13, "Weld Count");
+    u8g2.drawStr(1, 60, String(weldCount).c_str());
+    u8g2.drawStr( 55, 60, "welds");
+  } else {
+    u8g2.drawStr(10, 13, "Weld Delay");
+    u8g2.setFont(u8g2_font_ncenB24_tr);
+    if (weldDebounceDelay > 99)
+      u8g2.drawStr(1, 60, String(weldDebounceDelay).c_str());
+    else
+      u8g2.drawStr(25, 60, String(weldDebounceDelay).c_str());
+    u8g2.drawStr( 55, 60, " ms");
+  }
 }
 
 void loop(void) {
@@ -99,6 +106,7 @@ void loop(void) {
       buttonState = reading;
       if (buttonState == HIGH) {
         digitalWrite(ssrPin, HIGH);
+        weldCount++;
         lastWeldDebounceTime = millis();
       }
     }
@@ -129,6 +137,7 @@ void loop(void) {
       rotaryButtonState = rotary_reading;
       if (rotaryButtonState == LOW) {
         // Do something in the OLED menu
+        showWeldCount = !showWeldCount;
       }
     }
   }
@@ -142,17 +151,17 @@ void readEncoder() {
   if (currentStateCLK != lastStateCLK  && currentStateCLK == 1) {
     
     if (digitalRead(DT) == currentStateCLK) {
-      if (counter > minWeldDelay) {
-        counter -= 10;
+      if (weldDelay > minWeldDelay) {
+        weldDelay -= 10;
         currentDir = "CCW";
       }
     } else {
-      if (counter < maxWeldDelay) {
-        counter += 10;
+      if (weldDelay < maxWeldDelay) {
+        weldDelay += 10;
         currentDir = "CW";
       }
     }
-    weldDebounceDelay = counter;
+    weldDebounceDelay = weldDelay;
   }
   lastStateCLK = currentStateCLK;
 }

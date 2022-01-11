@@ -42,7 +42,7 @@ unsigned long lastRotaryDebounceTime = 0;
 // Stores offset for when to turn off the weld
 unsigned long lastWeldDebounceTime = 0;
 // Increase this number if you are getting false positives (i.e. sensitive weld button/rotary buttons) 
-unsigned long debounceDelay = 50;
+unsigned long debounceDelay = 30;
 int weldDebounceDelay = 50; // MS to initialize the weld time to
 // Max/min time in ms user can change the weld delay to
 int maxWeldDelay = 500;
@@ -108,7 +108,7 @@ void loop(void) {
   if ((millis() - lastDebounceTime) > debounceDelay) {
     if (reading != buttonState) {
       buttonState = reading;
-      if (buttonState == HIGH) {
+      if (buttonState == LOW) {
         digitalWrite(ssrPin, HIGH);
         weldCount++;
         lastWeldDebounceTime = millis();

@@ -37,3 +37,5 @@ Test all of your code with a bread board. Connect the SSR and everything as if i
 
 
 *NOTICE* I do not take any responsibility for loss of life / property / or otherwise. Please do your own research. High Voltage is dangerous and can kill. If you are uncertain I suggest using a car battery with high cold cranking amps in leu of a microwave transformer. You will get the current you need at a much safer voltage. 
+
+To quote Dr Strange, they really should put the warnings at the beginning of the book!
